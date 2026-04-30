@@ -4,7 +4,9 @@ __pycache__/
 *$py.class
 
 # Data files
-data/
+# Data files
+# NOTE: `data/` is intentionally tracked in this repository so analysis inputs are included.
+# If you want to ignore specific large files, add more specific patterns instead of ignoring the whole directory.
 
 # macOS
 .DS_Store

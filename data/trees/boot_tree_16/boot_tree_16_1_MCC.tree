@@ -1,0 +1,29 @@
+#NEXUS
+
+	Begin taxa;
+	Dimensions ntax=18;
+	Taxlabels
+		Adenocalymma_acutissimum
+		Cuspidaria_convoluta
+		Fridericia_speciosa
+		Lundia_corymbifera
+		Lundia_damazioi
+		Lundia_densiflora
+		Lundia_erionema
+		Lundia_gardneri
+		Lundia_helicocalyx
+		Lundia_laevis
+		Lundia_longa
+		Lundia_nitidula
+		Lundia_obliqua
+		Lundia_puberula
+		Lundia_spruceana
+		Lundia_virginalis
+		Perianthomega_vellozoi
+		Tanaecium_jaroba
+		;
+End;
+
+Begin trees;
+tree TREE1 = [&R]((((((((((Lundia_damazioi[&index=16]:1.674468,Lundia_virginalis[&index=15]:1.674468)[&index=19,age_95%_HPD={0.045277,4.20755}]:2.473062[&posterior=1.000000],(Lundia_nitidula[&index=18]:1.827966,Lundia_obliqua[&index=17]:1.827966)[&index=20,age_95%_HPD={0.242545,4.00371}]:2.319564[&posterior=1.000000])[&index=21,age_95%_HPD={1.07353,7.88925}]:0.818529[&posterior=1.000000],Lundia_longa[&index=14]:4.966060)[&index=22,age_95%_HPD={1.44378,9.06511}]:0.903897[&posterior=1.000000],(Lundia_gardneri[&index=13]:2.714398,Lundia_puberula[&index=12]:2.714398)[&index=23,age_95%_HPD={0.000444,6.99295}]:3.155558[&posterior=1.000000])[&index=24,age_95%_HPD={1.93867,10.3652}]:0.867686[&posterior=1.000000],(Lundia_corymbifera[&index=11]:5.680094,Lundia_laevis[&index=10]:5.680094)[&index=25,age_95%_HPD={1.776,10.3996}]:1.057549[&posterior=1.000000])[&index=26,age_95%_HPD={2.5251,11.5233}]:1.762527[&posterior=1.000000],Lundia_spruceana[&index=9]:8.500170)[&index=27,age_95%_HPD={3.62936,13.7744}]:0.717098[&posterior=1.000000],Lundia_erionema[&index=8]:9.217268)[&index=28,age_95%_HPD={4.21691,14.6936}]:2.457482[&posterior=1.000000],Lundia_helicocalyx[&index=7]:11.674750)[&index=29,age_95%_HPD={6.04218,17.3829}]:1.059153[&posterior=1.000000],Lundia_densiflora[&index=6]:12.733903)[&index=30,age_95%_HPD={7.01473,18.3862}]:36.423960[&posterior=1.000000],(((Adenocalymma_acutissimum[&index=5]:4.250179,Perianthomega_vellozoi[&index=4]:4.250179)[&index=31,age_95%_HPD={4.1e-05,13.9511}]:6.143613[&posterior=1.000000],Tanaecium_jaroba[&index=3]:10.393792)[&index=32,age_95%_HPD={0.050974,25.8093}]:11.731293[&posterior=1.000000],(Cuspidaria_convoluta[&index=2]:7.288122,Fridericia_speciosa[&index=1]:7.288122)[&index=33,age_95%_HPD={0.000262,21.8064}]:14.836963[&posterior=1.000000])[&index=34,age_95%_HPD={3.24451,44.8199}]:27.032778[&posterior=1.000000])[&index=35,age_95%_HPD={45.0436,52.9991}]:0.000000[&posterior=1.000000];
+End;
