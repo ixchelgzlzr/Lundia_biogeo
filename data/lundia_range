@@ -1,20 +1,27 @@
+#NEXUS
 
+Begin data;
+Dimensions ntax=18 nchar=5;
+Format datatype=Standard missing=? gap=- labels"01;
+Matrix
                             [ABCDE]
-Adenocalymma_acutissimum
-Cuspidaria_convoluta
-Fridericia_speciosa
-Perianthomega_vellozoi
-Tanaecium_jaroba
-Lundia_corymbifera
-Lundia_damazioi
-Lundia_densiflora
-Lundia_erionema
-Lundia_gardneri
-Lundia_helicocalyx
-Lundia_laevis
-Lundia_longa
-Lundia_nitidula
-Lundia_obliqua
-Lundia_puberula
-Lundia_spruceana
-Lundia_virginalis
+    Adenocalymma_acutissimum     00001
+    Cuspidaria_convoluta         00101
+    Fridericia_speciosa          00001
+    Perianthomega_vellozoi       00101
+    Tanaecium_jaroba             11101
+    Lundia_corymbifera           11011   
+    Lundia_damazioi              00001   
+    Lundia_densiflora            11000  
+    Lundia_erionema              10000
+    Lundia_gardneri              00100
+    Lundia_helicocalyx           00100
+    Lundia_laevis                10000
+    Lundia_longa                 00101
+    Lundia_nitidula              00001
+    Lundia_obliqua               00001
+    Lundia_puberula              11110
+    Lundia_spruceana             10010
+    Lundia_virginalis            00110    
+    ;
+End;
