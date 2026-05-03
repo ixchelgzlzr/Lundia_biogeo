@@ -1,0 +1,30 @@
+# input and output files depending on analysis
+
+# ML MCC tree
+#tree_fn  = "data/trees/ML/ML_1_MCC.tree"
+#out_fn   = "output/ML_MCC/ML_MCC"
+
+# MCC tree
+#tree_fn  = "data/trees/MCC/MCC_1_MCC.tree"
+#out_fn   = "output/MCC_MCC/MCC_MCC"
+
+# boot tree 16
+tree_fn  = "data/trees/boot_tree_16/boot_tree_16_1_MCC.tree"
+out_fn   = "output/boot_tree_16/boot_tree_16"
+
+
+#range data is the same for all
+range_fn = "data/lundia_range.nex"
+
+
+# analysis variables
+n_gen = 12000
+
+# run inference analysis
+source("scripts/run_simple.Rev")
+
+# run anc states
+source("scripts/make_anc_state.Rev")
+u
+# exit
+quit()

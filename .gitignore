@@ -8,8 +8,16 @@ __pycache__/
 # NOTE: `data/` is intentionally tracked in this repository so analysis inputs are included.
 # If you want to ignore specific large files, add more specific patterns instead of ignoring the whole directory.
 
+# Large RevBayes posterior tree traces
+output/**/*.tre
+
+# Keep compact summary trees
+!output/**/*.ase.tre
+!output/**/*.mcc.tre
+
 # macOS
 .DS_Store
 
 # VS Code
 .vscode/
+.Rproj.user

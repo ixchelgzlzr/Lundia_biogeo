@@ -4,7 +4,7 @@ Begin data;
 Dimensions ntax=18 nchar=5;
 Format datatype=Standard missing=? gap=- labels"01;
 Matrix
-                            [ABCDE]
+                                [ABCDE]
     Adenocalymma_acutissimum     00001
     Cuspidaria_convoluta         00101
     Fridericia_speciosa          00001
@@ -14,10 +14,10 @@ Matrix
     Lundia_damazioi              00001   
     Lundia_densiflora            11000  
     Lundia_erionema              10000
-    Lundia_gardneri              00100
+    Lundia_gardneri              00101
     Lundia_helicocalyx           00100
     Lundia_laevis                10000
-    Lundia_longa                 00101
+    Lundia_longa                 00001
     Lundia_nitidula              00001
     Lundia_obliqua               00001
     Lundia_puberula              11110
