@@ -1,0 +1,6 @@
+region,Amaz_for,Centroam,Dry_diag,Andean,atl_forest
+Amaz_for,1,1,1,1,0.2
+Centroam,1,1,0.2,1,0.1
+Dry_diag,1,0.2,1,0.2,1
+Andean,1,1,0.2,1,0.1
+atl_forest,0.2,0.1,1,0.1,1

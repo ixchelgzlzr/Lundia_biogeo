@@ -1,0 +1,3 @@
+variable,event,start_ma,end_ma
+environmental,dry_diagonal_formation,30,5
+topographic,andes_uplift,31,5
