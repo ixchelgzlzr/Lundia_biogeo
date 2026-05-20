@@ -1,0 +1,173 @@
+
+# read binary (01) presence-absence range data
+dat_range_01 = readDiscreteCharacterData(range_fn)
+
+# convert binary ranges into NaturalNumbers
+dat_range_n = formatDiscreteCharacterData(dat_range_01, "DEC")  
+
+
+# data dimensions
+n_areas  = dat_range_01.nchar()
+n_states = floor(2^n_areas)
+
+# Max area occupancy allowed
+max_areas = 5
+
+# get the converted state descriptions
+state_desc = dat_range_n.getStateDescriptions()
+
+# write the state descriptions to file
+state_desc_str = "state,range\n"
+for (i in 1:state_desc.size())
+{
+    state_desc_str += (i-1) + "," + state_desc[i] + "\n"
+}
+write(state_desc_str, file=out_fn+".state_labels.txt")
+
+# helper variables
+moves = VectorMoves()
+monitors = VectorMonitors()
+
+##############
+# Fixed tree #
+##############
+
+# read tree
+tree <- readTrees(tree_fn)[1]
+
+######################
+# Biogeography model #
+######################
+# We are going to use a dispersal rate multiplier to express how easy dispersal is between areas through time
+
+# read time interval data 
+tb <- readDelimitedDataFile(file=times_fn)
+
+# silly work around so it is not read as a matrix, but a vector
+time_bounds <- tb[1]
+
+for (i in 2:tb.size()){
+ time_bounds.append(tb[i])
+}
+
+# epoch transition times, unlike Landis' Hawaiian islands approach, we are going to treat time intervals as fixed
+# need to add last bound = present = 0
+epoch_times = time_bounds
+epoch_times.append(v(0))
+
+# number of epochs
+n_epochs <- epoch_times.size() 
+
+# read in the connectivity matrices 
+# these connectivity matrices were built to reflect connectivity in terms of adjacency, environmental and topographic similarity
+for (i in 1:n_epochs) {
+  epoch_fn[i] = geo_fn + i + ".txt"
+  connectivity[i] <- readDataDelimitedFile(file=epoch_fn[i], delimiter=" ")
+}
+
+
+# set up a global biogeographic event rate multiplier
+rate_bg ~ dnLoguniform(1E-4,1E2)
+rate_bg.setValue(1E-2)
+moves.append( mvScale(rate_bg, weight=4) )
+
+# the relative dispersal rate
+dispersal_rate <- 1.0
+
+# build the relative dispersal rate matrix per epoch, per area and scaling with connectivity 
+    for (i in 1:n_epochs) {
+      for (j in 1:n_areas) {
+        for (k in 1:n_areas) {
+          dr[i][j][k] <- 0.0
+          if (connectivity[i][j][k] > 0) {
+            dr[i][j][k]  := dispersal_rate * connectivity[i][j][k]
+          }
+        }
+      }
+    }
+
+# then the relative extirpation rate (or per-area extinction rates)
+log_sd <- 0.5
+log_mean <- ln(1) - 0.5*log_sd^2
+extirpation_rate ~ dnLognormal(mean=log_mean, sd=log_sd)
+moves.append( mvScale(extirpation_rate, weight=2) )
+
+# build the relative extirpation rate matrix
+for (i in 1:n_epochs) {
+  for (j in 1:n_areas) {
+    for (k in 1:n_areas) {
+      er[i][j][k] <- 0.0
+    }
+    er[i][j][j] := extirpation_rate
+  }
+}
+
+# build a vector of Q matrices
+for (i in 1:n_epochs) {
+  Q_DEC[i] := fnDECRateMatrix(dispersalRates=dr[i],
+                              extirpationRates=er[i],
+                              maxRangeSize=max_areas)
+}
+
+# Make the epochs object
+Q_DEC_epoch := fnEpoch(Q=Q_DEC, times=epoch_times, rates=rep(1,n_epochs))
+
+# build cladogenetic transition probabilities
+   clado_event_types <- [ "s", "a" ]
+    p_sympatry ~ dnUniform(0,1)
+    p_allopatry := abs(1.0 - p_sympatry)
+    clado_type_probs := simplex(p_sympatry, p_allopatry)
+    moves.append( mvSlide(p_sympatry, weight=2) )
+    P_DEC := fnDECCladoProbs(eventProbs=clado_type_probs,
+                             eventTypes=clado_event_types,
+                             numCharacters=n_areas,
+                             maxRangeSize=max_areas)
+
+# we net to set up the probability of the root frequency 
+# we will assign the same probability to all states
+    rf_DEC_tmp <- rep(1, n_states)
+    rf_DEC     <- simplex(rf_DEC_tmp)
+
+
+# the phylogenetic CTMC with cladogenetic events
+  m_bg ~ dnPhyloCTMCClado(tree=tree,
+                            Q=Q_DEC_epoch,
+                            cladoProbs=P_DEC,
+                            branchRates=rate_bg,
+                            rootFrequencies=rf_DEC,
+                            type="NaturalNumbers",
+                            nSites=1)
+    
+# attach the range data
+m_bg.clamp(dat_range_n)
+
+############
+# Monitors #
+############
+
+monitors.append( mnScreen(printgen=10, rate_bg) )
+monitors.append( mnModel(file=out_fn+".model.log", printgen=10) )
+monitors.append( mnFile(tree, filename=out_fn+".tre", printgen=10) )
+monitors.append( mnJointConditionalAncestralState(tree=tree,
+                                                  ctmc=m_bg,
+                                                  type="NaturalNumbers",
+                                                  withTips=true,
+                                                  withStartStates=true,
+                                                  filename=out_fn+".states.log",
+                                                  printgen=10) )
+monitors.append( mnStochasticCharacterMap(ctmc=m_bg,
+                                          filename=out_fn+".stoch.log",
+                                          printgen=100) )
+
+############
+# Analysis #
+############
+
+# build the model analysis object from the model graph
+mymodel = model(m_bg)
+
+# create the MCMC analysis object
+mymcmc = mcmc(mymodel, monitors, moves)
+
+
+

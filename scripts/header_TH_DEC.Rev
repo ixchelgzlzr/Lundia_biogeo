@@ -1,0 +1,38 @@
+# input and output files depending on analysis
+
+# ML MCC tree
+#tree_fn  = "data/trees/ML/ML_1_MCC.tree"
+#out_fn   = "output_TH/ML_MCC/ML_MCC_2"
+
+# MCC tree
+tree_fn  = "data/trees/MCC/MCC_1_MCC.tree"
+out_fn   = "output_TH/MCC_MCC/MCC_MCC_2"
+
+# boot tree 16
+#tree_fn  = "data/trees/boot_tree_16/boot_tree_16_1_MCC.tree"
+#out_fn   = "output_TH/boot_tree_16/boot_tree_16_1"
+
+# times path
+times_fn = "data/connectivity/output/interval_breakpoints.txt"
+
+# geo info path
+geo_fn   = "data/connectivity/output/global_connectivity_"
+
+#range data is the same for all
+range_fn = "data/lundia_range.nex"
+
+
+# analysis variables
+n_gen = 15000
+
+# Set up the model
+source("scripts/run_TH.Rev")
+
+# run the MCMC analysis
+mymcmc.run(n_gen)
+
+# run anc states
+source("scripts/make_anc_state.Rev")
+
+# exit
+quit()
